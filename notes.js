@@ -1,9 +1,30 @@
 const fs = require('fs')
 const chalk = require('chalk')
+const { exit } = require('process')
+
+
+
+
 const getNotes = () => {
     return 'your notes'
 }
 
+const readNote = (title) => {
+    console.log('title you want to read: ' + title)
+    const note = loadNotes();
+    note.forEach(element=>{
+        if(element.title===title)
+        {
+            console.log(element.body)
+            
+        }
+        else  
+        console.log(chalk.red.inverse('not found'))     
+        exit();
+        
+    })
+
+}
 const addNotes = (title, body) => {
     const notes = loadNotes();
 
@@ -26,18 +47,18 @@ const addNotes = (title, body) => {
     }
 
 }
-const listNotes = () =>
-{
+const listNotes = () => {
     console.log('hey here some notes')
     const show = loadNotes();
-    show.forEach(element => {
-        console.log(chalk.green.inverse(element.title))
-        console.log(chalk.blue.inverse(element.body))
+    show.forEach((element, e) => {
+        console.log(chalk.green.inverse(`note ${e+1} - ${element.title}`))
+
     });
-        
-    
- 
- 
+
+
+
+
+
 
 }
 
@@ -57,19 +78,16 @@ const loadNotes = () => {
     }
 }
 
-const removeNote = (title) =>{
+const removeNote = (title) => {
     const notes = loadNotes();
     const doesNotesExist = notes.filter(function (note) {
         return note.title !== title
-        
+
     })
-    if(notes.length > doesNotesExist.length)
-    {
-            console.log(chalk.green('notes removed'))
-            saveNotes(doesNotesExist)
-    }
-    else
-    {
+    if (notes.length > doesNotesExist.length) {
+        console.log(chalk.green('notes removed'))
+        saveNotes(doesNotesExist)
+    } else {
         console.log(chalk.red.inverse('none to remove'))
     }
 }
@@ -81,5 +99,7 @@ module.exports = {
     getNotes: getNotes,
     addNotes: addNotes,
     removeNote: removeNote,
-    listNotes: listNotes
+    listNotes: listNotes,
+    readNote: readNote
+
 }
